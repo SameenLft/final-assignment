@@ -1,1555 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vyaguta Dashboard</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, sans-serif;
-        background-color: #f4f7f9;
-        color: #333333;
-        line-height: 1.5;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Vyaguta Dashboard</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="left-section">
+      <div class="logo-section">
+        <img src="images/Logo.svg" alt="Vyaguta Logo" class="logo-icon" />
 
-      /* Header Styles */
-      .header {
-        background-color: #ffffff;
-        border-bottom: 2px solid #f4f7f9;
-        box-shadow: 0px 2px 2px rgba(204, 197, 197, 0.25);
-        padding: 0 132px;
-        height: 72px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-
-      .left-section {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-      }
-
-      .logo-section {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .logo-icon {
-        width: 35px;
-        height: 35px;
-      }
-
-      .logo-text {
-        font-size: 20px;
-        font-weight: 600;
-        color: #333333;
-      }
-
-      .nav-menu {
-        display: flex;
-        align-items: center;
-        gap: 32px;
-        list-style: none;
-      }
-
-      .nav-item {
-        color: #999999;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 8px 0;
-        transition: color 0.2s ease;
-      }
-
-      .nav-item:hover {
-        color: #102b7b;
-      }
-
-      .nav-item.active {
-        color: #2ecc71;
-      }
-
-      .right-section {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .icon-button {
-        width: 36px;
-        height: 36px;
-        border: none;
-        background: #ffffff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: relative;
-      }
-
-      .notification-badge {
-        position: absolute;
-        top: -2px;
-        right: -2px;
-        width: 16px;
-        height: 16px;
-        background-color: #f44336;
-        border-radius: 50%;
-        color: white;
-        font-size: 10px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-      }
-
-      .user-avatar {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: 1px solid #f2f2f2;
-      }
-
-      .user-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333333;
-      }
-
-      /* Main Content */
-      .main-content {
-        margin: 0 auto;
-        padding: 32px 132px;
-        display: flex;
-        flex-direction: column;
-        gap: 29px;
-      }
-
-      /* Dashboard Grid */
-      .dashboard-grid {
-        display: flex;
-        gap: 24px;
-        align-items: flex-start;
-      }
-
-      /* My Allocation Card */
-      .allocation-card {
-        flex: 1;
-        background: #ffffff;
-        border-radius: 4px;
-        box-shadow: 0px 2px 2px rgba(204, 197, 197, 0.25);
-        overflow: hidden;
-      }
-
-      .card-header {
-        padding: 16px;
-        border-bottom: 1px solid #e6e6e6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #333333;
-      }
-
-      .toggle-buttons {
-        display: flex;
-        border-radius: 18px;
-        overflow: hidden;
-      }
-
-      .toggle-btn {
-        padding: 6px 8px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-      }
-
-      .toggle-btn.active {
-        background: #29b6f6;
-        color: white;
-        border-radius: 20px 0 0 20px;
-      }
-
-      .toggle-btn.inactive {
-        background: white;
-        color: #999999;
-        border: 0.72px solid #b3b3b3;
-        border-radius: 0 20px 20px 0;
-      }
-
-      .allocation-content {
-        padding: 12px 16px;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-      }
-
-      .pie-chart-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .pie-chart {
-        width: 102px;
-        height: 102px;
-        border-radius: 50%;
-        background: conic-gradient(
-          #2ecc71 0deg 144deg,
-          #f2994a 144deg 216deg,
-          #102b7b 216deg 360deg
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .chart-center {
-        background: white;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .chart-hours {
-        font-size: 24px;
-        font-weight: 700;
-        color: #333333;
-      }
-
-      .chart-label {
-        font-size: 10px;
-        color: #737373;
-      }
-
-      .allocation-details {
-        flex: 1;
-      }
-
-      .project-item {
-        display: flex;
-        gap: 4px;
-        margin-bottom: 16px;
-        position: relative;
-      }
-
-      .project-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        margin-top: 4px;
-        border: 4px solid white;
-        position: relative;
-        z-index: 2;
-      }
-
-      .project-dot.green {
-        background: #2ecc71;
-      }
-      .project-dot.blue {
-        background: #102b7b;
-      }
-
-      .project-item:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        left: 6px;
-        top: 17px;
-        width: 1px;
-        height: 96px;
-        background: #e6e6e6;
-        z-index: 1;
-      }
-
-      .project-info {
-        flex: 1;
-      }
-
-      .project-info h4 {
-        color: #2196f3;
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 2px;
-      }
-
-      .project-dates {
-        font-size: 10px;
-        color: #999999;
-        margin-bottom: 4px;
-      }
-
-      .project-role {
-        font-size: 12px;
-        color: #737373;
-      }
-
-      .appraisers {
-        display: flex;
-        gap: 4px;
-        margin-top: 4px;
-      }
-
-      .appraiser-avatar {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 1px solid white;
-      }
-
-      /* Stats Section */
-      .stats-section {
-        border-top: 1px solid #d2d2d2;
-        padding: 12px 16px;
-        display: flex;
-        gap: 11px;
-      }
-
-      .stat-item {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .stat-value {
-        font-size: 20px;
-        font-weight: 700;
-      }
-
-      .stat-value.warning {
-        color: #f5af00;
-      }
-      .stat-value.danger {
-        color: #f44336;
-      }
-
-      .stat-label {
-        font-size: 12px;
-        color: #737373;
-      }
-
-      .stat-divider {
-        width: 1px;
-        background: #e6e6e6;
-        margin: 0 8px;
-      }
-
-      /* Attendance History Section */
-      .attendance-section {
-        border-top: 1px solid #d2d2d2;
-        padding: 16px;
-      }
-
-      .attendance-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
-
-      .attendance-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333333;
-      }
-
-      .view-history {
-        color: #2196f3;
-        font-size: 12px;
-        text-decoration: none;
-      }
-
-      .attendance-stats {
-        display: flex;
-        gap: 24px;
-        align-items: center;
-      }
-
-      .wfo-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .wfo-icon {
-        width: 24px;
-        height: 24px;
-        background: #102b7b;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 12px;
-      }
-
-      .wfo-details {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .wfo-time {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333333;
-      }
-
-      .wfo-label {
-        font-size: 10px;
-        color: #2196f3;
-      }
-
-      .attendance-metric {
-        text-align: center;
-        position: relative;
-      }
-
-      .attendance-metric:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        right: -12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 1px;
-        height: 30px;
-        background: #e6e6e6;
-      }
-
-      .metric-value {
-        font-size: 24px;
-        font-weight: 700;
-        color: #333333;
-      }
-
-      .metric-label {
-        font-size: 12px;
-        color: #737373;
-      }
-
-      /* Events Card */
-      .events-card {
-        flex: 1;
-        background: #ffffff;
-        border-radius: 4px;
-        box-shadow: 0px 2px 2px rgba(204, 197, 197, 0.25);
-        overflow: hidden;
-        height: 486px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .events-content {
-        flex: 1;
-        overflow-y: auto;
-        height: 436px;
-      }
-
-      .events-content::-webkit-scrollbar {
-        width: 4px;
-      }
-
-      .events-content::-webkit-scrollbar-track {
-        background: #f6f6f6;
-      }
-
-      .events-content::-webkit-scrollbar-thumb {
-        background: #d2d2d2;
-        border-radius: 2px;
-      }
-
-      .events-content::-webkit-scrollbar-thumb:hover {
-        background: #b3b3b3;
-      }
-
-      .event-item {
-        padding: 10px 16px;
-        border-bottom: 1px solid #f6f6f6;
-        display: flex;
-        gap: 16px;
-        align-items: center;
-      }
-
-      .event-date {
-        text-align: center;
-        min-width: 22px;
-      }
-
-      .event-day {
-        font-size: 10px;
-        color: #999999;
-        font-weight: 500;
-      }
-
-      .event-number {
-        font-size: 16px;
-        font-weight: 600;
-        color: #737373;
-      }
-
-      .event-month {
-        font-size: 10px;
-        color: #999999;
-        font-weight: 500;
-      }
-
-      .event-date.today .event-day,
-      .event-date.today .event-number,
-      .event-date.today .event-month {
-        color: #2ecc71;
-      }
-
-      .event-details {
-        flex: 1;
-      }
-
-      .event-title {
-        font-size: 14px;
-        font-weight: 500;
-        color: #333333;
-        margin-bottom: 4px;
-      }
-
-      .event-badge {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 91px;
-        font-size: 10px;
-        font-weight: 600;
-      }
-
-      .event-badge.event {
-        background: #2ecc71;
-        color: white;
-      }
-
-      .event-badge.holiday {
-        background: #f6f6f6;
-        color: #b3b3b3;
-      }
-
-      .event-badge.meeting {
-        background: #2196f3;
-        color: white;
-      }
-
-      .event-badge.training {
-        background: #ff9800;
-        color: white;
-      }
-
-      .event-badge.deadline {
-        background: #f44336;
-        color: white;
-      }
-
-      /* Notice Board */
-      .notice-board {
-        flex: 1;
-        background: linear-gradient(
-            147deg,
-            #102b7b 20.18%,
-            rgba(25, 92, 120, 0.91) 60.54%,
-            rgba(46, 204, 113, 0.71) 82.53%,
-            #f5af00 104.27%
-          ),
-          #fff;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-
-      .notice-header {
-        padding: 16px;
-        border-bottom: 1px solid #e6e6e6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .notice-title {
-        color: white;
-        font-size: 16px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .notice-view-all {
-        color: white;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: underline;
-      }
-
-      .notice-content {
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .notice-item {
-        background: #fbf2d3;
-        border: 1px solid #333333;
-        border-radius: 4px;
-        padding: 12px;
-      }
-
-      .notice-item h4 {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333333;
-        margin-bottom: 8px;
-      }
-
-      .notice-item p {
-        font-size: 12px;
-        color: #515151;
-        line-height: 1.2;
-      }
-
-      /* Team Table */
-      .team-section {
-        background: #ffffff;
-        border-radius: 4px;
-        box-shadow: 0px 2px 2px rgba(204, 197, 197, 0.25);
-        overflow: hidden;
-      }
-
-      .team-header {
-        padding: 12px 16px;
-        border-bottom: 1px solid #e6e6e6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .team-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #333333;
-      }
-
-      .team-count {
-        font-size: 14px;
-        color: #737373;
-      }
-
-      .team-stats {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
-
-      .stat-badge {
-        padding: 4px 8px;
-        border-radius: 91px;
-        font-size: 10px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .stat-badge.warning {
-        background: #ffc107;
-        color: white;
-      }
-
-      .stat-badge.neutral {
-        background: #f6f6f6;
-        color: #737373;
-      }
-
-      .team-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      .team-table th {
-        background: #ffffff;
-        padding: 8px 16px;
-        text-align: left;
-        font-size: 10px;
-        font-weight: 600;
-        color: #737373;
-        border-bottom: 1px solid #e6e6e6;
-        text-transform: uppercase;
-        letter-spacing: 0.1px;
-      }
-
-      .team-table td {
-        padding: 8px 16px;
-        border-bottom: 1px solid #f6f6f6;
-        font-size: 12px;
-      }
-
-      .member-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .member-avatar {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-      }
-
-      .member-details h5 {
-        font-weight: 400;
-        color: #333333;
-        margin-bottom: 2px;
-      }
-
-      .member-role {
-        font-size: 10px;
-        color: #737373;
-      }
-
-      .allocation-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .allocation-divider {
-        width: 1px;
-        height: 20px;
-        background: #e6e6e6;
-      }
-
-      /* Worklog Form */
-      .worklog-section {
-        background: #ffffff;
-        border-radius: 4px;
-        box-shadow: 0px 5px 15px rgba(145, 165, 179, 0.1);
-        overflow: hidden;
-      }
-
-      .worklog-header {
-        padding: 22px;
-        border-bottom: 1px solid #e6e6e6;
-      }
-
-      .worklog-title {
-        font-size: 20px;
-        font-weight: 600;
-        color: #263238;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        margin-bottom: 4px;
-      }
-
-      .worklog-date {
-        font-size: 14px;
-        color: #333333;
-        margin-left: 28px;
-      }
-
-      .worklog-form {
-        padding: 16px 22px;
-      }
-
-      .form-header {
-        display: flex;
-        gap: 24px;
-        padding: 14px 0;
-        border-bottom: 1px solid #e6e6e6;
-        font-size: 16px;
-        font-weight: 600;
-        color: #737373;
-      }
-
-      .form-row {
-        display: flex;
-        gap: 24px;
-        padding: 16px 0;
-        border-bottom: 1px solid #f2f2f2;
-        align-items: flex-start;
-      }
-
-      .form-field {
-        position: relative;
-      }
-
-      .form-field select,
-      .form-field input,
-      .form-field textarea {
-        width: 100%;
-        padding: 8px 10px;
-        border: 1px solid #d2d2d2;
-        border-radius: 2px;
-        font-size: 14px;
-        font-family: inherit;
-        background: white;
-      }
-
-      .form-field.project {
-        width: 288px;
-      }
-      .form-field.task {
-        width: 220px;
-      }
-      .form-field.log {
-        width: 396px;
-      }
-      .form-field.time {
-        width: 140px;
-      }
-
-      .form-field textarea {
-        height: 58px;
-        resize: vertical;
-      }
-
-      .form-field select:disabled,
-      .form-field input:disabled,
-      .form-field textarea:disabled {
-        background: #f2f2f2;
-        color: #d2d2d2;
-      }
-
-      .time-input-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .time-input-container input {
-        width: 74px;
-      }
-
-      .time-actions {
-        display: flex;
-        gap: 4px;
-      }
-
-      .time-btn {
-        width: 24px;
-        height: 24px;
-        border: 1px solid #d2d2d2;
-        background: white;
-        border-radius: 2px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        color: #737373;
-      }
-
-      .time-btn:hover {
-        background: #f2f2f2;
-      }
-
-      .form-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 22px;
-      }
-
-      .form-buttons {
-        display: flex;
-        gap: 17px;
-      }
-
-      .btn {
-        padding: 8px 12px;
-        border-radius: 2px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .btn-secondary {
-        background: white;
-        color: #999999;
-        border: 1px solid #b3b3b3;
-      }
-
-      .btn-primary {
-        background: #2ecc71;
-        color: white;
-      }
-
-      .btn-danger {
-        background: white;
-        color: #f44336;
-        border: 1px solid #f44336;
-      }
-
-      .total-duration {
-        text-align: right;
-      }
-
-      .total-label {
-        font-size: 14px;
-        color: #333333;
-      }
-
-      .total-time {
-        font-size: 20px;
-        font-weight: 600;
-        color: #333333;
-      }
-
-      /* Footer */
-      .footer-links {
-        display: flex;
-        gap: 25px;
-        justify-content: flex-start;
-        padding: 20px 0;
-      }
-
-      .footer-links a {
-        color: #29b6f6;
-        font-size: 12px;
-        text-decoration: none;
-        letter-spacing: 0.12px;
-      }
-
-      /* Responsive */
-      @media (max-width: 1200px) {
-        .header {
-          padding: 0 20px;
-        }
-
-        .main-content {
-          padding: 20px;
-        }
-
-        .dashboard-grid {
-          flex-direction: column;
-        }
-
-        .allocation-card,
-        .events-card,
-        .notice-board {
-          width: 100%;
-          max-width: 500px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .nav-menu {
-          display: none;
-        }
-
-        .user-name {
-          display: none;
-        }
-
-        .form-row {
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .form-field.project,
-        .form-field.task,
-        .form-field.log,
-        .form-field.time {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="header">
-      <div class="left-section">
-        <div class="logo-section">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Notice-6VLM0nxdHGDJ3GklKH7mMEbeOmDh5u.svg"
-            alt="Vyaguta Logo"
-            class="logo-icon"
-          />
-          <span class="logo-text">Vyaguta</span>
-        </div>
-
-        <nav>
-          <ul class="nav-menu">
-            <li><a href="#" class="nav-item">People</a></li>
-            <li><a href="#" class="nav-item">Teams</a></li>
-            <li><a href="#" class="nav-item active">Attendance</a></li>
-            <li><a href="#" class="nav-item">JUMP</a></li>
-            <li><a href="#" class="nav-item">Honor</a></li>
-            <li><a href="#" class="nav-item">OKR</a></li>
-          </ul>
-        </nav>
       </div>
 
-      <div class="right-section">
-        <button class="icon-button">📧</button>
-        <button class="icon-button">🔗</button>
-        <button class="icon-button">
-          🛒
-          <div class="notification-badge">4</div>
-        </button>
-        <div class="user-profile">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-            alt="User Avatar"
-            class="user-avatar"
-          />
-          <span class="user-name">Pratik Shrestha</span>
-          <span>▼</span>
-        </div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#" class="nav-item">People</a></li>
+          <li><a href="#" class="nav-item">Teams</a></li>
+          <li><a href="#" class="nav-item active">Attendance</a></li>
+          <li><a href="#" class="nav-item">JUMP</a></li>
+          <li><a href="#" class="nav-item">Honor</a></li>
+          <li><a href="#" class="nav-item">OKR</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="right-section">
+      <button class="icon-button"><img src="images/icons/ask.svg" alt="Vyaguta Logo"/></button>
+      <button class="icon-button"><img src="images/icons/link.svg" alt="Vyaguta Logo"/></button>
+      <button class="icon-button">
+        <img src="images/icons/notice.svg" alt="Vyaguta Logo"/>
+        <div class="notification-badge">4</div>
+      </button>
+      <div class="user-profile">
+        <img src="images/Pratik.png" alt="User Avatar" class="user-avatar" />
+        <span class="user-name">Pratik Shrestha</span>
+        <span><img src="images/icons/dropdown.svg" alt="dropdown"></span>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Dashboard Grid -->
-      <div class="dashboard-grid">
-        <!-- My Allocation Card -->
-        <div class="allocation-card">
-          <div class="card-header">
-            <h2 class="card-title">My Allocation</h2>
-            <div class="toggle-buttons">
-              <button class="toggle-btn active">Current</button>
-              <button class="toggle-btn inactive">Booking</button>
-            </div>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- My Allocation Card -->
+      <div class="allocation-card">
+        <div class="card-header">
+          <h2 class="card-title">My Allocation</h2>
+          <div class="toggle-buttons">
+            <button class="toggle-btn active">Current</button>
+            <button class="toggle-btn inactive">Booking</button>
           </div>
-          <div class="allocation-content">
-            <div class="pie-chart-container">
-              <div class="pie-chart">
-                <div class="chart-center">
-                  <div class="chart-hours">40</div>
-                  <div class="chart-label">hrs/week</div>
-                </div>
-              </div>
-            </div>
-            <div class="allocation-details">
-              <div class="project-item">
-                <div class="project-dot green"></div>
-                <div class="project-info">
-                  <h4>Vyaguta</h4>
-                  <div class="project-dates">
-                    <strong>Start date:</strong> Oct 24, 2019<br />
-                    <strong>Potential end date:</strong> Mar 24, 2024
-                  </div>
-                  <div class="project-role">
-                    Senior Product Designer • <strong>20 hrs/week</strong> •
-                    Learning
-                  </div>
-                  <div class="appraisers">
-                    <span
-                      style="font-size: 12px; color: #737373; margin-right: 4px"
-                      >Appraisers:</span
-                    >
-                    <img
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                      alt="Appraiser"
-                      class="appraiser-avatar"
-                    />
-                    <img
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                      alt="Appraiser"
-                      class="appraiser-avatar"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="project-item">
-                <div class="project-dot blue"></div>
-                <div class="project-info">
-                  <h4>Delphi: Automated Synthesis</h4>
-                  <div class="project-dates">
-                    <strong>Start date:</strong> Oct 24, 2019<br />
-                    <strong>End date:</strong> Feb 21, 2024
-                  </div>
-                  <div class="project-role">
-                    Team Lead • <strong>20 hrs/week</strong>
-                  </div>
-                </div>
+        </div>
+        <div class="allocation-content">
+          <div class="pie-chart-container">
+            <div class="pie-chart">
+              <div class="chart-center">
+                <div class="chart-hours">40</div>
+                <div class="chart-label">hrs/week</div>
               </div>
             </div>
           </div>
-          <div class="stats-section">
-            <div class="stat-item">
-              <div class="stat-value">38h 30m</div>
-              <div class="stat-label">Logged this week</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <div class="stat-value warning">24</div>
-              <div class="stat-label">Worklogs pending</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value danger">214</div>
-              <div class="stat-label">Attendance Missed</div>
-            </div>
-          </div>
-          <div class="attendance-section">
-            <div class="attendance-header">
-              <h3 class="attendance-title">
-                Last 30 days history of your attendance
-              </h3>
-              <a href="#" class="view-history">View history</a>
-            </div>
-            <div class="attendance-stats">
-              <div class="wfo-info">
-                <div class="wfo-icon">🏢</div>
-                <div class="wfo-details">
-                  <div class="wfo-time">WFO 9:15 am</div>
-                  <div class="wfo-label">median clock-in time</div>
+          <div class="allocation-details">
+            <div class="project-item">
+              <div class="project-dot green"></div>
+              <div class="project-info">
+                <h4>Vyaguta</h4>
+                <div class="project-dates">
+                  <strong>Start date:</strong> Oct 24, 2019<br />
+                  <strong>Potential end date:</strong> Mar 24, 2024
+                </div>
+                <div class="project-role">
+                  Senior Product Designer • <strong>20 hrs/week</strong> •
+                  Learning
+                </div>
+                <div class="appraisers">
+                  <span style="font-size: 12px; color: #737373; margin-right: 4px">Appraisers:</span>
+                  <img src="images/Abhash.svg" alt="Appraiser" class="appraiser-avatar" />
+                  <img src="images/Random.svg" alt="Appraiser" class="appraiser-avatar" />
                 </div>
               </div>
-              <div class="attendance-metric">
-                <div class="metric-value">10</div>
-                <div class="metric-label">Remote</div>
-              </div>
-              <div class="attendance-metric">
-                <div class="metric-value">5</div>
-                <div class="metric-label">WFO</div>
-              </div>
-              <div class="attendance-metric">
-                <div class="metric-value">2</div>
-                <div class="metric-label">Leaves</div>
+            </div>
+            <div class="project-item">
+              <div class="project-dot blue"></div>
+              <div class="project-info">
+                <h4>Delphi: Automated Synthesis</h4>
+                <div class="project-dates">
+                  <strong>Start date:</strong> Oct 24, 2019<br />
+                  <strong>End date:</strong> Feb 21, 2024
+                </div>
+                <div class="project-role">
+                  Team Lead • <strong>20 hrs/week</strong>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Upcoming Events -->
-        <div class="events-card">
-          <div class="card-header">
-            <h2 class="card-title">Upcoming Events & Holidays</h2>
+        <div class="stats-section">
+          <div class="stat-item">
+            <div class="stat-value">38h 30m</div>
+            <div class="stat-label">Logged this week</div>
           </div>
-          <div class="events-content">
-            <div class="event-item">
-              <div class="event-date today">
-                <div class="event-day">Wed</div>
-                <div class="event-number">08</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">
-                  Talking to the Developers from Google
-                </div>
-                <span class="event-badge event">Event</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Thu</div>
-                <div class="event-number">09</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Leaptalk</div>
-                <span class="event-badge event">Event</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Fri</div>
-                <div class="event-number">10</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Maha Shivaratiri</div>
-                <span class="event-badge holiday">Holiday</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Mon</div>
-                <div class="event-number">13</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Design Disco</div>
-                <span class="event-badge event">Event</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Tue</div>
-                <div class="event-number">14</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Team Stand-up Meeting</div>
-                <span class="event-badge meeting">Meeting</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Wed</div>
-                <div class="event-number">15</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">React Training Workshop</div>
-                <span class="event-badge training">Training</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Thu</div>
-                <div class="event-number">16</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Project Deadline - Phase 1</div>
-                <span class="event-badge deadline">Deadline</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Fri</div>
-                <div class="event-number">17</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Company All-Hands Meeting</div>
-                <span class="event-badge meeting">Meeting</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Sat</div>
-                <div class="event-number">18</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Weekend Hackathon</div>
-                <span class="event-badge event">Event</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Mon</div>
-                <div class="event-number">20</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Client Presentation</div>
-                <span class="event-badge meeting">Meeting</span>
-              </div>
-            </div>
-            <div class="event-item">
-              <div class="event-date">
-                <div class="event-day">Tue</div>
-                <div class="event-number">21</div>
-                <div class="event-month">Jun</div>
-              </div>
-              <div class="event-details">
-                <div class="event-title">Summer Solstice</div>
-                <span class="event-badge holiday">Holiday</span>
-              </div>
-            </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value warning">24</div>
+            <div class="stat-label">Worklogs pending</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value danger">214</div>
+            <div class="stat-label">Attendance Missed</div>
           </div>
         </div>
-
-        <!-- Notice Board -->
-        <div class="notice-board">
-          <div class="notice-header">
-            <div class="notice-title">📋 Notice Board</div>
-            <a href="#" class="notice-view-all">View all</a>
+        <div class="attendance-section">
+          <div class="attendance-header">
+            <h3 class="attendance-title">
+              Last 30 days history of your attendance
+            </h3>
+            <a href="#" class="view-history">View history</a>
           </div>
-          <div class="notice-content">
-            <div class="notice-item">
-              <h4>Important notice about Dashain Vacation</h4>
-              <p>
-                The Dashain vacation will be for 3 days, if you want to take
-                leave before or after vacation ...
-              </p>
+          <div class="attendance-stats">
+            <div class="wfo-info">
+              <div class="wfo-icon"><img src="images/icons/wfo.svg" alt="wfo"></div>
+              <div class="wfo-details">
+                <div class="wfo-time">WFO 9:15 am</div>
+                <div class="wfo-label">median clock-in time</div>
+              </div>
             </div>
-            <div class="notice-item">
-              <h4>Important notice about Dashain Vacation</h4>
-              <p>
-                The Dashain vacation will be for 3 days, if you want to take
-                leave before or after vacation ...
-              </p>
+            <div class="attendance-metric">
+              <div class="metric-value">10</div>
+              <div class="metric-label">Remote</div>
             </div>
-            <div class="notice-item">
-              <h4>Does evaluation affect your salary?</h4>
-              <p>
-                Know about how evaluation plays important role in your promotion
-                and your salary.
-              </p>
+            <div class="attendance-metric">
+              <div class="metric-value">5</div>
+              <div class="metric-label">WFO</div>
             </div>
-            <div class="notice-item">
-              <h4>Does evaluation affect your salary?</h4>
-              <p>
-                Know about how evaluation plays important role in your promotion
-                and your salary.
-              </p>
+            <div class="attendance-metric">
+              <div class="metric-value">2</div>
+              <div class="metric-label">Leaves</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Team Table -->
-      <div class="team-section">
-        <div class="team-header">
-          <div>
-            <span class="team-title">My Team</span>
-            <span class="team-count">24 members</span>
-          </div>
-          <div class="team-stats">
-            <span style="font-size: 12px; color: #737373"
-              >Today • Fri, Aug 01</span
-            >
-            <div class="stat-badge warning">⚠️ 8</div>
-            <div class="stat-badge neutral">🏠 4</div>
-            <div class="stat-badge neutral">⚫ 2</div>
-            <div class="stat-badge neutral">📅 1</div>
-          </div>
+      <!-- Upcoming Events -->
+      <div class="events-card">
+        <div class="card-header">
+          <h2 class="card-title">Upcoming Events & Holidays</h2>
         </div>
-        <table class="team-table">
-          <thead>
-            <tr>
-              <th>Name ↓</th>
-              <th>Attendance</th>
-              <th>I am their</th>
-              <th>Allocations</th>
-              <th>Planned Leaves</th>
-              <th>Pending/Missing</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="member-info">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                    alt="Avatar"
-                    class="member-avatar"
-                  />
-                  <div class="member-details">
-                    <h5>Harnoop Gaire</h5>
-                    <div class="member-role">Software Engineer</div>
-                  </div>
-                </div>
-              </td>
-              <td>⚫</td>
-              <td>TM</td>
-              <td>
-                <div class="allocation-info">
-                  <div>
-                    <strong>40h</strong><br />
-                    <small>Vyaguta, Persimmon, Product Design</small>
-                  </div>
-                </div>
-              </td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="member-info">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                    alt="Avatar"
-                    class="member-avatar"
-                  />
-                  <div class="member-details">
-                    <h5>Hekshith Giri</h5>
-                    <div class="member-role">Software Engineer</div>
-                  </div>
-                </div>
-              </td>
-              <td>⚫</td>
-              <td>TM</td>
-              <td>
-                <div class="allocation-info">
-                  <div>
-                    <strong>40h</strong><br />
-                    <small>Vyaguta, Persimmon, Product Design</small>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <span
-                  style="
-                    background: #f7e9ff;
-                    color: #ab22ff;
-                    padding: 2px 6px;
-                    border-radius: 11px;
-                    font-size: 12px;
-                  "
-                  >1</span
-                >
-              </td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="member-info">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                    alt="Avatar"
-                    class="member-avatar"
-                  />
-                  <div class="member-details">
-                    <h5>Soneeya Karki</h5>
-                    <div class="member-role">Software Engineer</div>
-                  </div>
-                </div>
-              </td>
-              <td>🏠</td>
-              <td>TM</td>
-              <td>
-                <div class="allocation-info">
-                  <div>
-                    <strong>40h</strong><br />
-                    <small>Vyaguta, Persimmon, Product Design</small>
-                  </div>
-                </div>
-              </td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="member-info">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qwe.jpg-ih9cczEVf36ExFsl6u6AaB5JmAfB8N.jpeg"
-                    alt="Avatar"
-                    class="member-avatar"
-                  />
-                  <div class="member-details">
-                    <h5>Idha Kattel</h5>
-                    <div class="member-role">Software Engineer</div>
-                  </div>
-                </div>
-              </td>
-              <td>⚫</td>
-              <td>TM</td>
-              <td>
-                <div class="allocation-info">
-                  <div>
-                    <strong>40h</strong><br />
-                    <small>Vyaguta, Persimmon, Product Design</small>
-                  </div>
-                </div>
-              </td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Worklog Form -->
-      <div class="worklog-section">
-        <div class="worklog-header">
-          <div class="worklog-title">📊 My Worklog</div>
-          <div class="worklog-date">Friday, 12 August, 2022</div>
-        </div>
-        <div class="worklog-form">
-          <div class="form-header">
-            <div style="width: 314px">Project/Area/Guild/Pods</div>
-            <div style="width: 244px">Task</div>
-            <div style="width: 420px">Log</div>
-            <div style="width: 140px">Time (0h 0m)</div>
-          </div>
-          <div class="form-row">
-            <div class="form-field project">
-              <select>
-                <option>Vyaguta</option>
-                <option>Persimmon</option>
-                <option>Product Design</option>
-              </select>
+        <div class="events-content">
+          <div class="event-item">
+            <div class="event-date today">
+              <div class="event-day">Wed</div>
+              <div class="event-number">08</div>
+              <div class="event-month">Jun</div>
             </div>
-            <div class="form-field task">
-              <select>
-                <option>Meetings</option>
-                <option>Development</option>
-                <option>Testing</option>
-              </select>
-            </div>
-            <div class="form-field log">
-              <textarea placeholder="Sync-up with Abhash dai and Erica.">
-Sync-up with Abhash dai and Erica.</textarea
-              >
-            </div>
-            <div class="form-field time">
-              <div class="time-input-container">
-                <input type="text" value="1h 0m" />
-                <div class="time-actions">
-                  <button class="time-btn">⏰</button>
-                  <button class="time-btn">🔄</button>
-                </div>
+            <div class="event-details">
+              <div class="event-title">
+                Talking to the Developers from Google
               </div>
+              <span class="event-badge event">Event</span>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-field project">
-              <!-- Empty project field -->
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Thu</div>
+              <div class="event-number">09</div>
+              <div class="event-month">Jun</div>
             </div>
-            <div class="form-field task">
-              <select>
-                <option>Select Tasks</option>
-              </select>
-            </div>
-            <div class="form-field log">
-              <textarea placeholder="Add details here"></textarea>
-            </div>
-            <div class="form-field time">
-              <!-- Empty time field - removed input and actions -->
+            <div class="event-details">
+              <div class="event-title">Leaptalk</div>
+              <span class="event-badge meeting">Event</span>
             </div>
           </div>
-          <div style="padding: 14px 0; border-bottom: 1px solid #f2f2f2">
-            <div class="total-duration">
-              <div class="total-label">Total Duration:</div>
-              <div class="total-time">0h 0m</div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Fri</div>
+              <div class="event-number">10</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Maha Shivaratiri</div>
+              <span class="event-badge holiday">Holiday</span>
             </div>
           </div>
-        </div>
-        <div class="form-actions">
-          <div class="form-buttons">
-            <button class="btn btn-secondary">Save as Draft</button>
-            <button class="btn btn-primary">✅ Submit</button>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Mon</div>
+              <div class="event-number">13</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Design Disco</div>
+              <span class="event-badge meeting">Event</span>
+            </div>
           </div>
-          <button class="btn btn-danger">Cancel Request</button>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Tue</div>
+              <div class="event-number">14</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Team Stand-up Meeting</div>
+              <span class="event-badge meeting">Meeting</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Wed</div>
+              <div class="event-number">15</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">React Training Workshop</div>
+              <span class="event-badge training">Training</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Thu</div>
+              <div class="event-number">16</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Project Deadline - Phase 1</div>
+              <span class="event-badge deadline">Deadline</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Fri</div>
+              <div class="event-number">17</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Company All-Hands Meeting</div>
+              <span class="event-badge meeting">Meeting</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Sat</div>
+              <div class="event-number">18</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Weekend Hackathon</div>
+              <span class="event-badge event">Event</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Mon</div>
+              <div class="event-number">20</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Client Presentation</div>
+              <span class="event-badge meeting">Meeting</span>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="event-day">Tue</div>
+              <div class="event-number">21</div>
+              <div class="event-month">Jun</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">Summer Solstice</div>
+              <span class="event-badge holiday">Holiday</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Footer Links -->
-      <div class="footer-links">
-        <a href="#">Report Bug</a>
-        <a href="#">Give Feedback</a>
-        <a href="#">Release notes</a>
+      <!-- Notice Board -->
+      <div class="notice-board">
+        <div class="notice-header">
+          <div class="notice-title"> <img src="images/icons/megaphone.svg" alt="megaphone">Notice Board</div>
+          <a href="#" class="notice-view-all">View all</a>
+        </div>
+        <div class="notice-content">
+          <div class="notice-item">
+            <h4>Important notice about Dashain Vacation</h4>
+            <p>
+              The Dashain vacation will be for 3 days, if you want to take
+              leave before or after vacation ...
+            </p>
+          </div>
+          <div class="notice-item">
+            <h4>Important notice about Dashain Vacation</h4>
+            <p>
+              The Dashain vacation will be for 3 days, if you want to take
+              leave before or after vacation ...
+            </p>
+          </div>
+          <div class="notice-item">
+            <h4>Does evaluation affect your salary?</h4>
+            <p>
+              Know about how evaluation plays important role in your promotion
+              and your salary.
+            </p>
+          </div>
+          <div class="notice-item">
+            <h4>Does evaluation affect your salary?</h4>
+            <p>
+              Know about how evaluation plays important role in your promotion
+              and your salary.
+            </p>
+          </div>
+        </div>
       </div>
-    </main>
-  </body>
+    </div>
+
+    
+  </main>
+</body>
+
 </html>
